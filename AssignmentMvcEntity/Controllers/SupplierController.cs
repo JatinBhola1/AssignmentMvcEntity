@@ -27,17 +27,16 @@ namespace AssignmentMvcEntity.Controllers
             _repo.Create(supplier);
             return RedirectToAction("Index");
         }
-        public IActionResult Delete(int id)
+        public IActionResult Delete(int Id)
         {
-            Supplier obj = _repo.GetSupplierById(id);
+            Supplier obj = _repo.GetSupplierById(Id);
             return View(obj);
         }
         [HttpPost]
-        public IActionResult Deleted(int id)
+        public IActionResult Deleted(int SupplierId)
         {
-            Supplier obj = _repo.GetSupplierById(id);
-            if (obj != null)
-                _repo.Delete(obj.SupplierId);
+           
+            _repo.Delete(SupplierId);
             return RedirectToAction("Index");
 
         }

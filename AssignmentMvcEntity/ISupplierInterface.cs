@@ -9,5 +9,6 @@ namespace AssignmentMvcEntity
         Supplier GetSupplierById(int id);
         int Edit(int id, Supplier supplier);
         int Delete(int id);
+  
     }
 }

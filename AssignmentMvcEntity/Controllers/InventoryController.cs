@@ -51,6 +51,10 @@ namespace AssignmentMvcEntity.Controllers
             return RedirectToAction("Index");
 
         }
+        public IActionResult Details(int id)
+        {
+            return View(_repo.GetInventoryId(id));
+        }
 
     }
 }
