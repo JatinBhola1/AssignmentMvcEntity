@@ -51,9 +51,24 @@ namespace AssignmentMvcEntity.Repository
                 return 1;
         }
 
-        public List<Inventory> GetInventory()
+        public List<InventoryViewModel> GetInventory()
         {
-            return _db.Inventories.ToList();
+            var list =(from x in _db.Inventories
+                       join y in _db.Suppliers
+                       on x.Supplier.SupplierId equals y.SupplierId
+                       select new InventoryViewModel
+                       {
+                           Id= x.InventoryId,
+                           Name = x.Name,
+                           QtyInStock= x.QtyInStock,
+                           Details= x.Details,
+                           LastUpdated= DateTime.Now,
+                           SupplierId= x.SupplierId,
+                           SupplierName=y.SupplierName,
+                           ContactNo= y.ContactNo,
+                       }
+                       ).ToList();
+            return list;
         }
 
         public Inventory GetInventoryId(int id)
