@@ -1,20 +1,28 @@
 ﻿using AssignmentMvcEntity.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace AssignmentMvcEntity.Controllers
 {
     public class InventoryController : Controller
     {
         IInventoryInterface _repo;
-        public InventoryController(IInventoryInterface repo)
+        ISupplierInterface _repo1;
+        public InventoryController(IInventoryInterface repo, ISupplierInterface repo1)
         {
-            _repo = repo;            
+            _repo = repo;
+            _repo1 = repo1;
+
         }
         public IActionResult Index()
         {
             return View(_repo.GetInventory());
         }
         public IActionResult Create() {
+            ViewData["SupplierId"] =
+                    new SelectList(_repo1.GetSupplier(),
+                    "SupplierId", "SupplierName"
+                    );
             return View();
         }
         [HttpPost]
@@ -29,16 +37,18 @@ namespace AssignmentMvcEntity.Controllers
             return View(obj);
         }
         [HttpPost]
-        public IActionResult Deleted(int id)
+        public IActionResult Deleted(int InventoryId)
         {
-            Inventory obj = _repo.GetInventoryId(id);
-            if (obj != null)
-                _repo.Delete(obj.InventoryId);
-           return RedirectToAction("Index");
+            _repo.Delete(InventoryId);
+            return RedirectToAction("Index");
 
         }
         public IActionResult Edit(int id)
         {
+            ViewData["SupplierId"] =
+                    new SelectList(_repo1.GetSupplier(),
+                    "SupplierId", "SupplierName"
+                    );
             Inventory obj=_repo.GetInventoryId(id);
             return View(obj);
         }
